@@ -1,5 +1,9 @@
 # 小刘菜单管理系统使用文档
 
+## 项目地址
+
+Gitee 仓库：[https://gitee.com/xiaaoke/menu-manager-wireless](https://gitee.com/xiaaoke/menu-manager-wireless)
+
 ## 系统概述
 
 小刘菜单管理系统是一个基于HTML、CSS和JavaScript开发的单页面应用，用于管理和维护菜品菜单。系统无需后端服务器，可直接在浏览器中运行。
