@@ -1571,6 +1571,73 @@
         let filteredItems = [];
         let confirmCallback = null;
         let fileHandle = null;
+        let db = null;
+
+        // IndexedDB 辅助函数
+        function initIndexedDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('MenuDatabase', 1);
+                
+                request.onerror = () => reject('IndexedDB 初始化失败');
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+                
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains('menuItems')) {
+                        db.createObjectStore('menuItems', { keyPath: 'id' });
+                    }
+                };
+            });
+        }
+
+        async function saveToIndexedDB(data) {
+            try {
+                if (!db) {
+                    await initIndexedDB();
+                }
+                const transaction = db.transaction(['menuItems'], 'readwrite');
+                const store = transaction.objectStore('menuItems');
+                
+                // 清空现有数据
+                const clearRequest = store.clear();
+                clearRequest.onerror = () => console.error('清空数据失败');
+                
+                // 批量添加数据
+                data.forEach(item => {
+                    store.put(item);
+                });
+                
+                return new Promise((resolve) => {
+                    transaction.oncomplete = () => resolve(true);
+                    transaction.onerror = () => resolve(false);
+                });
+            } catch (error) {
+                console.error('保存到 IndexedDB 失败:', error);
+                return false;
+            }
+        }
+
+        async function loadFromIndexedDB() {
+            try {
+                if (!db) {
+                    await initIndexedDB();
+                }
+                const transaction = db.transaction(['menuItems'], 'readonly');
+                const store = transaction.objectStore('menuItems');
+                const request = store.getAll();
+                
+                return new Promise((resolve) => {
+                    request.onsuccess = () => resolve(request.result || []);
+                    request.onerror = () => resolve([]);
+                });
+            } catch (error) {
+                console.error('从 IndexedDB 加载失败:', error);
+                return [];
+            }
+        }
 
         // File System API 辅助函数
         async function getFileSystemAccess() {
@@ -1623,19 +1690,30 @@
         }
 
         // 初始化应用
-        function initApp() {
-            // 从localStorage加载数据
-            loadFromLocalStorage();
-            // 初始化主题
-            initTheme();
-            // 初始化筛选
-            filteredItems = [...menuItems];
-            // 检查localStorage使用情况
-            checkLocalStorageUsage();
-            // 渲染菜单列表
-            renderMenuItems();
-            // 绑定事件
-            bindEvents();
+        async function initApp() {
+            try {
+                // 初始化 IndexedDB
+                await initIndexedDB();
+                // 从IndexedDB加载数据
+                await loadFromLocalStorage();
+                // 初始化主题
+                initTheme();
+                // 初始化筛选
+                filteredItems = [...menuItems];
+                // 检查存储使用情况
+                checkStorageUsage();
+                // 渲染菜单列表
+                renderMenuItems();
+                // 绑定事件
+                bindEvents();
+            } catch (error) {
+                console.error('初始化应用失败:', error);
+                // 失败时继续运行，使用空数据
+                initTheme();
+                filteredItems = [];
+                renderMenuItems();
+                bindEvents();
+            }
         }
 
         // 初始化主题
@@ -1658,29 +1736,57 @@
             document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
         }
 
-        // 从localStorage加载数据
-        function loadFromLocalStorage() {
-            const storedData = localStorage.getItem('menuItems');
-            if (storedData) {
-                menuItems = JSON.parse(storedData);
+        // 从IndexedDB加载数据
+        async function loadFromLocalStorage() {
+            try {
+                // 先尝试从 IndexedDB 加载
+                const data = await loadFromIndexedDB();
+                if (data.length > 0) {
+                    menuItems = data;
+                    return;
+                }
+                
+                // 如果 IndexedDB 中没有数据，尝试从 localStorage 迁移
+                const storedData = localStorage.getItem('menuItems');
+                if (storedData) {
+                    menuItems = JSON.parse(storedData);
+                    // 迁移到 IndexedDB
+                    await saveToIndexedDB(menuItems);
+                    // 清除 localStorage 中的数据
+                    localStorage.removeItem('menuItems');
+                }
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                // 失败时尝试从 localStorage 加载
+                const storedData = localStorage.getItem('menuItems');
+                if (storedData) {
+                    menuItems = JSON.parse(storedData);
+                }
             }
         }
 
-        // 保存数据到localStorage
-        function saveToLocalStorage() {
-            localStorage.setItem('menuItems', JSON.stringify(menuItems));
-            // 检查localStorage使用情况
-            checkLocalStorageUsage();
+        // 保存数据到IndexedDB
+        async function saveToLocalStorage() {
+            try {
+                // 保存到 IndexedDB
+                await saveToIndexedDB(menuItems);
+            } catch (error) {
+                console.error('保存数据失败:', error);
+                // 失败时尝试保存到 localStorage
+                localStorage.setItem('menuItems', JSON.stringify(menuItems));
+            }
+            // 检查存储使用情况
+            checkStorageUsage();
         }
 
-        // 检查localStorage使用情况
-        function checkLocalStorageUsage() {
+        // 检查存储使用情况
+        function checkStorageUsage() {
             // 估算当前存储大小
             const data = JSON.stringify(menuItems);
             const currentSize = new Blob([data]).size;
             
-            // 假设localStorage限制为5MB
-            const maxSize = 5 * 1024 * 1024;
+            // 假设 IndexedDB 限制为 50MB（实际限制远大于此）
+            const maxSize = 50 * 1024 * 1024;
             const usagePercentage = (currentSize / maxSize) * 100;
             
             // 当使用超过80%时提示用户
@@ -1945,7 +2051,7 @@
         }
 
         // 添加或更新菜品
-        function addOrUpdateDish() {
+        async function addOrUpdateDish() {
             // 表单验证
             if (!validateForm()) {
                 return;
@@ -1992,7 +2098,7 @@
             }
             
             // 保存数据
-            saveToLocalStorage();
+            await saveToLocalStorage();
             // 重新筛选
             filterItems();
             // 关闭弹窗
@@ -2088,11 +2194,11 @@
 
         // 删除菜品
         function deleteDish(id) {
-            showConfirmModal('确定要删除这个菜品吗？', (confirmed) => {
+            showConfirmModal('确定要删除这个菜品吗？', async (confirmed) => {
                 if (confirmed) {
                     const idStr = id.toString();
                     menuItems = menuItems.filter(item => item.id.toString() !== idStr);
-                    saveToLocalStorage();
+                    await saveToLocalStorage();
                     filterItems();
                 }
             });
@@ -2119,7 +2225,7 @@
                 const importedData = await loadDataFromFile();
                 if (importedData && Array.isArray(importedData)) {
                     menuItems = importedData;
-                    saveToLocalStorage();
+                    await saveToLocalStorage();
                     alert('数据导入成功');
                     window.location.reload();
                 } else if (importedData) {
@@ -2132,7 +2238,9 @@
         }
 
         // 初始化应用
-        initApp();
+        (async function() {
+            await initApp();
+        })();
     </script>
 </body>
 </html>
