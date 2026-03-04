@@ -311,6 +311,150 @@
         @media (max-width: 768px) {
             .container {
                 padding: 16px 12px;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+                margin-bottom: 24px;
+                text-align: center;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+                margin-bottom: 16px;
+            }
+
+            .add-btn-container {
+                margin-bottom: 24px;
+            }
+
+            .form-content {
+                padding: 20px;
+                width: 95%;
+                max-width: 400px;
+            }
+
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+            label {
+                font-size: 0.875rem;
+                margin-bottom: 6px;
+            }
+
+            input[type="text"], input[type="number"] {
+                padding: 12px;
+                font-size: 0.875rem;
+            }
+
+            .btn-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                font-size: 0.875rem;
+            }
+
+            /* 菜单列表响应式 */
+            .menu-list {
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .menu-list h2 {
+                padding: 16px;
+                font-size: 1.125rem;
+            }
+
+            .menu-item {
+                flex-direction: row;
+                align-items: center;
+                padding: 12px 16px;
+                gap: 12px;
+                position: relative;
+            }
+
+            .menu-item-image {
+                width: 60px;
+                height: 60px;
+                margin-right: 12px;
+                flex-shrink: 0;
+            }
+
+            .menu-item-info {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .menu-item-name {
+                font-size: 0.875rem;
+                font-weight: 600;
+                margin-bottom: 4px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .menu-item-price {
+                font-size: 0.875rem;
+                font-weight: 700;
+            }
+
+            .menu-item-actions {
+                position: static;
+                display: flex;
+                gap: 4px;
+                flex-shrink: 0;
+            }
+
+            .menu-item-actions .btn {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+                width: auto;
+            }
+
+            /* 空状态响应式 */
+            .empty-state {
+                padding: 40px 20px;
+                text-align: center;
+            }
+
+            .empty-state h3 {
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+
+            .empty-state p {
+                font-size: 0.875rem;
+                margin-bottom: 16px;
+            }
+
+            /* 备份功能响应式 */
+            .backup-container {
+                padding: 16px;
+                border-radius: 8px;
+            }
+
+            .backup-container h2 {
+                font-size: 1.125rem;
+                margin-bottom: 16px;
+            }
+
+            .backup-container .btn-container {
+                flex-direction: column;
+            }
+        }
+
+        /* 小屏幕设备优化 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px 10px;
             }
 
             h1 {
@@ -318,49 +462,31 @@
                 margin-bottom: 20px;
             }
 
-            h2 {
-                font-size: 1.125rem;
-            }
-
-            .add-btn-container {
-                margin-bottom: 20px;
-            }
-
-            .form-content {
-                padding: 16px;
-            }
-
-            .btn-container {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-
             .menu-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-                padding: 16px;
+                padding: 10px 12px;
+                gap: 10px;
             }
 
             .menu-item-image {
-                align-self: center;
-                width: 80px;
-                height: 80px;
-                margin-right: 0;
+                width: 50px;
+                height: 50px;
+                margin-right: 10px;
             }
 
-            .menu-item-actions {
-                position: static;
-                width: 100%;
-                justify-content: flex-end;
-                margin-top: 8px;
+            .menu-item-name {
+                font-size: 0.8125rem;
             }
 
-            .backup-container {
+            .menu-item-price {
+                font-size: 0.8125rem;
+            }
+
+            .menu-item-actions .btn {
+                padding: 4px 6px;
+                font-size: 0.6875rem;
+            }
+
+            .form-content {
                 padding: 16px;
             }
         }
@@ -393,6 +519,63 @@
             max-width: 100%;
             max-height: 200px;
             object-fit: cover;
+        }
+
+        /* 图片预览模态框 */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .image-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #EF4444;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background-color: #DC2626;
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -449,6 +632,14 @@
         </div>
     </div>
 
+    <!-- 图片预览模态框 -->
+    <div class="image-modal" id="imageModal">
+        <div class="image-modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <img class="modal-image" id="modalImage" src="" alt="图片预览">
+        </div>
+    </div>
+
     <script>
         // 全局变量
         let menuItems = [];
@@ -498,7 +689,7 @@
                 <div class="menu-item" data-id="${item.id}">
                     ${item.image ? `
                         <div class="menu-item-image">
-                            <img src="${item.image}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                            <img src="${item.image}" alt="${item.name}" class="menu-image" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; cursor: pointer;">
                         </div>
                     ` : ''}
                     <div class="menu-item-info">
@@ -514,6 +705,8 @@
 
             // 绑定编辑和删除事件
             bindItemEvents();
+            // 绑定图片点击事件
+            bindImageClickEvents();
         }
 
         // 绑定事件
@@ -543,6 +736,16 @@
             
             // 图片上传预览
             document.getElementById('dishImage').addEventListener('change', handleImageUpload);
+            
+            // 关闭图片预览模态框
+            document.getElementById('closeModal').addEventListener('click', closeImageModal);
+            
+            // 点击模态框背景关闭
+            document.getElementById('imageModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('imageModal')) {
+                    closeImageModal();
+                }
+            });
         }
 
         // 处理图片上传
@@ -588,6 +791,29 @@
                     deleteDish(id);
                 });
             });
+        }
+
+        // 绑定图片点击事件
+        function bindImageClickEvents() {
+            document.querySelectorAll('.menu-image').forEach(img => {
+                img.addEventListener('click', (e) => {
+                    const imageSrc = e.target.src;
+                    openImageModal(imageSrc);
+                });
+            });
+        }
+
+        // 打开图片预览模态框
+        function openImageModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageSrc;
+            modal.style.display = 'flex';
+        }
+
+        // 关闭图片预览模态框
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
         }
 
         // 添加或更新菜品
