@@ -1,182 +1,183 @@
-# Xiao Liu Menu Management System User Guide
+# 小刘菜单管理系统使用文档
 
-## Project Address
+## 项目地址
 
-Gitee Repository: [https://gitee.com/xiaaoke/menu-manager-wireless](https://gitee.com/xiaaoke/menu-manager-wireless)
-GitHub Repository: [https://github.com/suipianma/menu-manager-wireless](https://github.com/suipianma/menu-manager-wireless)
+Gitee 仓库：[https://gitee.com/xiaaoke/menu-manager-wireless](https://gitee.com/xiaaoke/menu-manager-wireless)
 
-## System Overview
+GitHub 仓库：[https://github.com/suipianma/menu-manager-wireless](https://github.com/suipianma/menu-manager-wireless)
 
-Xiao Liu Menu Management System is a single-page application developed with HTML, CSS, and JavaScript for managing and maintaining dish menus. The system does not require a backend server and can run directly in a browser.
+## 系统概述
 
-### Main Features
-- Responsive design, adapting to various screen sizes
-- Support for dark/light theme switching
-- Complete dish management functionality
-- Data backup and recovery
-- Image upload and preview
-- Powerful filtering and sorting capabilities
+小刘菜单管理系统是一个基于HTML、CSS和JavaScript开发的单页面应用，用于管理和维护菜品菜单。系统无需后端服务器，可直接在浏览器中运行。
 
-## Version Description
+### 主要特点
+- 响应式设计，适配各种屏幕尺寸
+- 支持深色/浅色主题切换
+- 完整的菜品管理功能
+- 数据备份与恢复
+- 图片上传与预览
+- 强大的筛选和排序功能
 
-The system provides two versions, with `menu-manager-wireless.html` recommended as the priority:
+## 版本说明
 
-### 1. menu-manager-wireless.html (Recommended)
-- **Storage Method**: Uses IndexedDB for storage, with larger storage space (approximately 50MB)
-- **File Operations**: Uses modern File System API for data import/export
-- **Technical Features**: Uses modern JavaScript features like async/await
-- **Error Tolerance**: More robust error handling and data migration mechanisms
-- **Storage Limit**: Prompts users to export data when storage usage exceeds 80%
+系统提供两个版本，推荐优先使用 `menu-manager-wireless.html`：
 
-### 2. menu-manager.html (Traditional Version)
-- **Storage Method**: Uses localStorage for storage, with smaller storage space (approximately 5MB)
-- **File Operations**: Uses traditional file download methods for data backup
-- **Technical Features**: Uses traditional JavaScript callback methods
-- **Storage Limit**: localStorage has limited space, and large numbers of images may lead to insufficient storage
+### 1. menu-manager-wireless.html（推荐）
+- **存储方式**：使用 IndexedDB 存储数据，存储空间更大（约50MB）
+- **文件操作**：使用现代 File System API 进行数据导入导出
+- **技术特性**：使用 async/await 等现代 JavaScript 特性
+- **容错能力**：更健壮的错误处理和数据迁移机制
+- **存储限制**：存储空间使用超过80%时会提示用户导出数据
 
-## System Functions
+### 2. menu-manager.html（传统版）
+- **存储方式**：使用 localStorage 存储数据，存储空间较小（约5MB）
+- **文件操作**：使用传统的文件下载方式进行数据备份
+- **技术特性**：使用传统 JavaScript 回调方式
+- **存储限制**：localStorage 空间有限，大量图片可能导致存储不足
 
-### 1. Dish Management
+## 系统功能
 
-#### Add Dish
-1. Click the "Add Dish" button at the top of the page
-2. Fill in the following information in the pop-up form:
-   - Dish name (required)
-   - Price (required, must be greater than 0)
-   - Category (Hot Dishes, Cold Dishes, Soups, Staples, Drinks)
-   - Description (optional)
-   - Image (optional, supports various image formats)
-3. Click the "Add Dish" button to save
+### 1. 菜品管理
 
-#### Edit Dish
-1. Find the dish to edit in the dish list
-2. Click the "Modify" button on the right side of the dish
-3. Modify the corresponding information in the pop-up form
-4. Click the "Save Changes" button to complete the edit
+#### 添加菜品
+1. 点击页面上方的"添加菜品"按钮
+2. 在弹出的表单中填写以下信息：
+   - 菜品名称（必填）
+   - 价格（必填，需大于0）
+   - 分类（热菜、凉菜、汤品、主食、饮品）
+   - 描述（可选）
+   - 图片（可选，支持各种图片格式）
+3. 点击"添加菜品"按钮保存
 
-#### Delete Dish
-1. Find the dish to delete in the dish list
-2. Click the "Delete" button on the right side of the dish
-3. Click the "OK" button in the confirmation dialog
+#### 编辑菜品
+1. 在菜品列表中找到要编辑的菜品
+2. 点击该菜品右侧的"修改"按钮
+3. 在弹出的表单中修改相应信息
+4. 点击"保存修改"按钮完成编辑
 
-### 2. Filtering and Searching
+#### 删除菜品
+1. 在菜品列表中找到要删除的菜品
+2. 点击该菜品右侧的"删除"按钮
+3. 在确认对话框中点击"确定"按钮
 
-#### Search Function
-- Enter dish name keywords in the search box, and the system will real-time filter matching dishes
+### 2. 筛选与搜索
 
-#### Category Filter
-- Select a specific category from the category dropdown menu, and the system will filter all dishes under that category
-- Select "All Categories" to view all dishes
+#### 搜索功能
+- 在搜索框中输入菜品名称关键词，系统会实时筛选匹配的菜品
 
-#### Sorting Function
-- Sort by name in ascending/descending order
-- Sort by price in ascending/descending order
+#### 分类筛选
+- 在分类下拉菜单中选择特定分类，系统会筛选出该分类下的所有菜品
+- 选择"全部分类"可查看所有菜品
 
-### 3. Data Management
+#### 排序功能
+- 按名称升序/降序排序
+- 按价格升序/降序排序
 
-#### Export Data
-1. Click the "Export Data" button at the bottom of the page
-2. **menu-manager-wireless.html**: The system will open a file save dialog, select the save location
-3. **menu-manager.html**: The system will generate a JSON format backup file and automatically download it
-4. File name format: menu-backup-YYYY-MM-DD.json (traditional version) or menu-data.json (wireless version)
+### 3. 数据管理
 
-#### Import Data
-1. Click the "Import Data" button at the bottom of the page
-2. **menu-manager-wireless.html**: The system will open a file selection dialog, select the previously exported JSON file
-3. **menu-manager.html**: Select the previously exported JSON backup file
-4. The system will automatically import the data and refresh the page
+#### 导出数据
+1. 点击页面底部的"导出数据"按钮
+2. **menu-manager-wireless.html**：系统会打开文件保存对话框，选择保存位置
+3. **menu-manager.html**：系统会生成一个JSON格式的备份文件并自动下载
+4. 文件名格式为：menu-backup-YYYY-MM-DD.json（传统版）或 menu-data.json（无线版）
 
-### 4. Other Functions
+#### 导入数据
+1. 点击页面底部的"导入数据"按钮
+2. **menu-manager-wireless.html**：系统会打开文件选择对话框，选择之前导出的JSON文件
+3. **menu-manager.html**：选择之前导出的JSON备份文件
+4. 系统会自动导入数据并刷新页面
 
-#### Theme Switching
-- Click the theme switching button (🌙/☀️) in the upper right corner of the page to switch between dark and light themes
-- Theme settings are saved locally and will be automatically applied when opened next time
+### 4. 其他功能
 
-#### Image Preview
-- Click on the dish image to view a large image in a modal box
-- Click outside the modal box or the close button to close the preview
+#### 主题切换
+- 点击页面右上角的主题切换按钮（🌙/☀️）可在深色和浅色主题之间切换
+- 主题设置会保存在本地，下次打开时会自动应用
 
-## Usage Guide
+#### 图片预览
+- 点击菜品图片可在模态框中查看大图
+- 点击模态框外部或关闭按钮可关闭预览
 
-### First-time Use
-1. **Recommended**: Open the `menu-manager-wireless.html` file directly in a browser
-2. The system will automatically initialize and display an empty state prompt
-3. Click the "Add Dish" button to start creating a menu
+## 使用指南
 
-### Daily Use
-1. **Add new dishes**: Use the "Add Dish" button
-2. **Manage existing dishes**: Use the "Modify" and "Delete" buttons in the dish list
-3. **Find dishes**: Use the search box and category filter
-4. **Adjust display order**: Use the sorting function
-5. **Regular backup**: Use the "Export Data" function to back up menu data
+### 首次使用
+1. **推荐**：直接在浏览器中打开 `menu-manager-wireless.html` 文件
+2. 系统会自动初始化，显示空状态提示
+3. 点击"添加菜品"按钮开始创建菜单
 
-### Data Recovery
-1. Click the "Import Data" button in the system
-2. Select the previously exported backup file
-3. The system will automatically import the data and refresh the page
+### 日常使用
+1. **添加新菜品**：使用"添加菜品"按钮
+2. **管理现有菜品**：使用菜品列表中的"修改"和"删除"按钮
+3. **查找菜品**：使用搜索框和分类筛选
+4. **调整显示顺序**：使用排序功能
+5. **定期备份**：使用"导出数据"功能备份菜单数据
 
-## Technical Features
+### 数据恢复
+1. 在系统中点击"导入数据"按钮
+2. 选择之前导出的备份文件
+3. 系统会自动导入数据并刷新页面
 
-### menu-manager-wireless.html (Recommended)
-- **Data Storage**: Uses IndexedDB for storage, with larger storage space (approximately 50MB)
-- **Data Migration**: Automatically migrates data from localStorage to IndexedDB
-- **File Operations**: Uses modern File System API for file operations
-- **Error Handling**: More robust error handling mechanisms
-- **Performance Optimization**: Uses async/await to improve code readability and performance
+## 技术特性
 
-### menu-manager.html (Traditional Version)
-- **Data Storage**: Uses localStorage for storage, with smaller storage space (approximately 5MB)
-- **File Operations**: Uses traditional file download methods
-- **Compatibility**: Supports older versions of browsers
+### menu-manager-wireless.html（推荐）
+- **数据存储**：使用 IndexedDB 存储数据，存储空间更大（约50MB）
+- **数据迁移**：自动从 localStorage 迁移数据到 IndexedDB
+- **文件操作**：使用现代 File System API 进行文件操作
+- **错误处理**：更健壮的错误处理机制
+- **性能优化**：使用 async/await 提高代码可读性和性能
 
-### Common Features
-- **Image Processing**: Supports uploading images as dish illustrations, automatically compresses images to save storage space
-- **Responsive Design**: Adapts to desktop, tablet, and mobile devices
-- **Real-time Operations**: Real-time filtering and sorting, no page refresh required
-- **Local Storage**: Data is stored locally, no network requests required
+### menu-manager.html（传统版）
+- **数据存储**：使用 localStorage 存储数据，存储空间较小（约5MB）
+- **文件操作**：使用传统的文件下载方式
+- **兼容性**：支持更旧版本的浏览器
 
-## Notes
+### 共同特性
+- **图片处理**：支持上传图片作为菜品配图，自动压缩图片以节省存储空间
+- **响应式设计**：适配桌面、平板和移动设备
+- **实时操作**：实时筛选和排序，无需页面刷新
+- **本地存储**：数据存储在本地，无需网络请求
 
-1. **Data Security**: Data is stored locally in the browser. Clearing browser data will cause menu data to be lost. Please regularly use the "Export Data" function to back up data.
+## 注意事项
 
-2. **Storage Space**:
-   - **menu-manager-wireless.html**: Uses IndexedDB, with larger storage space (approximately 50MB)
-   - **menu-manager.html**: Uses localStorage, with limited storage space (approximately 5MB). Large numbers of images may occupy more space
+1. **数据安全**：数据存储在浏览器本地，清除浏览器数据会导致菜单数据丢失。请定期使用"导出数据"功能备份数据。
 
-3. **Image Size**: To ensure system performance and reasonable use of storage space, it is recommended not to upload overly large images. The system will automatically compress images.
+2. **存储空间**：
+   - **menu-manager-wireless.html**：使用 IndexedDB，存储空间较大（约50MB）
+   - **menu-manager.html**：使用 localStorage，存储空间有限（约5MB），大量图片可能会占用较多空间
 
-4. **Browser Compatibility**:
-   - **menu-manager-wireless.html**: Requires modern browsers that support IndexedDB and File System API
-   - **menu-manager.html**: Supports more older versions of browsers
+3. **图片大小**：为确保系统性能和存储空间合理使用，建议上传的图片不要过大，系统会自动压缩图片。
 
-5. **Data Import**: Importing data will overwrite existing data. Please ensure you have backed up current data before importing.
+4. **浏览器兼容性**：
+   - **menu-manager-wireless.html**：需要支持 IndexedDB 和 File System API 的现代浏览器
+   - **menu-manager.html**：支持更多旧版本浏览器
 
-## Troubleshooting
+5. **数据导入**：导入数据会覆盖现有数据，请在导入前确保已备份当前数据。
 
-### Common Issues
+## 故障排除
 
-1. **Unable to add dishes**
-   - Check if the dish name and price have been filled in
-   - Ensure the price is greater than 0
+### 常见问题
 
-2. **Image upload failed**
-   - Check if the image format is supported
-   - Ensure the image size is reasonable
+1. **无法添加菜品**
+   - 检查菜品名称和价格是否已填写
+   - 确保价格大于0
 
-3. **Data loss**
-   - Check if browser data has been cleared
-   - Use previously exported backup files to restore data
+2. **图片上传失败**
+   - 检查图片格式是否支持
+   - 确保图片大小合理
 
-4. **Insufficient storage space**
-   - Export data and clear browser data
-   - Reduce image usage or use smaller images
-   - **Recommended**: Switch to the `menu-manager-wireless.html` version to get larger storage space
+3. **数据丢失**
+   - 检查是否清除了浏览器数据
+   - 使用之前导出的备份文件恢复数据
 
-5. **Import/export failure**
-   - Ensure the file format is correct (JSON format)
-   - Check if the browser supports the corresponding file operation API
-   - **menu-manager-wireless.html**: Ensure the browser supports File System API
+4. **存储空间不足**
+   - 导出数据并清除浏览器数据
+   - 减少图片使用或使用更小的图片
+   - **推荐**：切换到 `menu-manager-wireless.html` 版本以获得更大的存储空间
 
-### Contact Support
+5. **导入/导出失败**
+   - 确保文件格式正确（JSON格式）
+   - 检查浏览器是否支持相应的文件操作API
+   - **menu-manager-wireless.html**：确保浏览器支持 File System API
 
-If you encounter other issues during use, please contact the system administrator for assistance.
+### 联系支持
+
+如果您在使用过程中遇到其他问题，请联系系统管理员获取帮助。
